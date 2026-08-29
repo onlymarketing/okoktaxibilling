@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OKOK TAXI - Customer Trip Bill Generator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <h1>OKOK TAXI</h1>
+      <p>Customer Trip Bill Generator</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn secondary" id="sampleBtn">Load Sample</button>
+      <button class="btn danger" id="clearBtn">Clear</button>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section class="panel form-panel">
+      <div class="panel-title">
+        <div><h2>Bill Details</h2><p>Enter details or paste raw trip data.</p></div>
+      </div>
+
+      <label class="label">Raw Data / WhatsApp Text</label>
+      <textarea id="rawData" class="raw-box" placeholder="Paste raw trip details here...\nExample:\nBhavani Travels\nTN 81 V 8942\nS.Karthik\n9585508613\n15 per km\nDriver Bata 400\n..."></textarea>
+      <button class="btn parse" id="parseBtn">Parse Raw Data</button>
+
+      <div class="divider"><span>OR ENTER MANUALLY</span></div>
+
+      <form id="billForm" autocomplete="off">
+        <div class="grid two">
+          <div class="field"><label>Customer Name</label><input id="customerName" /></div>
+          <div class="field"><label>Customer Contact</label><input id="customerContact" /></div>
+          <div class="field"><label>Driver Name</label><input id="driverName" /></div>
+          <div class="field"><label>Driver Contact</label><input id="driverContact" /></div>
+          <div class="field"><label>Vehicle</label><input id="vehicle" placeholder="Swift Dzire" /></div>
+          <div class="field"><label>Vehicle Number</label><input id="vehicleNumber" /></div>
+          <div class="field"><label>Company / Travel Partner</label><input id="partnerCompany" /></div>
+          <div class="field"><label>Trip Type</label><select id="package"><option>Outstation Trip</option><option>Local Trip</option><option>Airport Trip</option><option>Round Trip</option><option>One Way Trip</option></select></div>
+          <div class="field"><label>Included KM</label><input id="includedKm" placeholder="365 KM" /></div>
+          <div class="field"><label>Extra KM Charge</label><input id="extraKmCharge" placeholder="₹15 / KM" /></div>
+          <div class="field"><label>Extra Hour Charge</label><input id="extraHourCharge" placeholder="₹150 / Hour" /></div>
+          <div class="field"><label>Driver Bata</label><input id="driverBata" placeholder="₹400" /></div>
+          <div class="field"><label>Toll & Parking</label><input id="tollParking" placeholder="Extra / Included" /></div>
+          <div class="field"><label>Pickup Location</label><input id="pickupLocation" /></div>
+          <div class="field"><label>Pickup Time</label><input id="pickupTime" placeholder="9:30 AM" /></div>
+          <div class="field"><label>Trip Date</label><input id="tripDate" type="date" /></div>
+          <div class="field"><label>Drop Location</label><input id="dropLocation" /></div>
+          <div class="field"><label>Drop Time</label><input id="dropTime" placeholder="9:00 PM" /></div>
+          <div class="field"><label>Total Amount</label><input id="totalAmount" placeholder="7000" /></div>
+          <div class="field"><label>Payment Status</label><select id="paymentStatus"><option>Paid</option><option>Pending</option><option>Partially Paid</option></select></div>
+          <div class="field"><label>Payment Mode</label><select id="paymentMode"><option>Cash</option><option>UPI</option><option>Bank Transfer</option><option>Card</option><option>Not Specified</option></select></div>
+          <div class="field"><label>GST</label><select id="gst"><option>Not Added</option><option>Included</option><option>Applicable</option></select></div>
+        </div>
+
+        <div class="field full"><label>Route / Locations Covered</label><textarea id="route" placeholder="Madurai → Aruppukottai → Virudhunagar → Tirumangalam → Batlagundu → Dindigul → Manapparai → Trichy"></textarea></div>
+        <div class="field full"><label>Remarks</label><textarea id="remarks" placeholder="All included / Toll & parking extra / Any special note"></textarea></div>
+
+        <div class="form-actions">
+          <button type="button" class="btn primary" id="generateBtn">Generate Bill</button>
+          <button type="button" class="btn secondary" id="printBtn">Print</button>
+          <button type="button" class="btn success" id="pdfBtn">Download PDF</button>
+          <button type="button" class="btn secondary" id="imageBtn">Download Image</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel preview-panel">
+      <div class="preview-bar"><h2>Live Preview</h2><span>A4 Customer Trip Bill</span></div>
+      <div class="preview-wrap">
+        <article id="bill" class="bill">
+          <div class="bill-top-band"></div>
+          <header class="bill-header">
+            <div class="logo-wrap"><img id="logo" src="logo.png" alt="OK OK TAXI Logo" /></div>
+            <div class="company-head">
+              <h1>SHANVI OKOK TAXI PRIVATE LIMITED</h1>
+              <p>📍 No.5, Pazhavanthangal, MAI Alandur, Pazhavanthangal, Saidapet,<br>Kanchipuram - 600061. Tamil Nadu</p>
+              <p>☎ +91 86082 99000 &nbsp;&nbsp; ✉ shanviokoktaxi@gmail.com</p>
+            </div>
+          </header>
+          <div class="gold-rule"></div>
+          <h2 class="bill-title">Customer Trip Bill</h2>
+
+          <table class="bill-table">
+            <tbody id="billRows"></tbody>
+          </table>
+
+          <div class="thanks">Thank you for choosing OKOK TAXI!</div>
+          <div class="terms">
+            All cab bookings are subject to availability and confirmation. The package is valid as per the agreed time and distance limit, and any additional usage will be charged accordingly. Toll, parking, permit, and interstate charges (if applicable) are extra. Waiting time beyond the scheduled pickup or included package may incur additional charges. Customers are responsible for timely payment upon trip completion. The company is not liable for any loss or damage to personal belongings left in the vehicle. Any damage caused to the vehicle by the customer will be chargeable. Routes and usage must comply with the agreed booking terms.
+          </div>
+          <div class="bill-bottom-band"></div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
